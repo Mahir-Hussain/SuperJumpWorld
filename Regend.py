@@ -12,8 +12,7 @@ def character():
     character = pygame.transform.scale(lemon, (80, 80))
     rect = pygame.Rect(100, 300, 500, 500)
 
-    data = character, rect
-    return data
+    return character, rect
 
 class SuperJumpWorld():
     def __init__(self):
@@ -32,9 +31,7 @@ class SuperJumpWorld():
                 if event.type == pygame.QUIT:
                    exit()
 
-            data = character()
-            character, rect = data
-            rect.x -= 1
+
             self.screenUpdater(character, rect)
 
     def screenUpdater(self, character, rect):

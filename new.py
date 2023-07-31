@@ -14,6 +14,7 @@ class SuperJumpWorld():
         self.name = pygame.display.set_caption("Super Jump World")
         self.icon = pygame.display.set_icon(pygame.image.load('images/icon.png'))
         self.screen = pygame.display.set_mode((self.width, self.height))
+        self.keys = pygame.key.get_pressed()
         self.clock = pygame.time.Clock()
 
     def initialize(self):
@@ -22,9 +23,8 @@ class SuperJumpWorld():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-            self.keys = pygame.key.get_pressed()
-            self.startup()
-            self.menu()
+            if self.keys[K_p]:
+                
 
     def updater(self, data):
         self.screen.fill([255,255,255])
