@@ -4,14 +4,9 @@ from sys import exit
 import pygame
 from pygame.locals import *
 
+from services.level.levels import Level
+from services.level.settings import *
 from services.visualisation_service import visualizationService
-
-# lemon = pygame.image.load(os.path.join("images", "lemon-egg.png"))
-# character = pygame.transform.scale(lemon, (80, 80))
-# rect = pygame.Rect(100, 300, 700, 400)
-
-# skyImg = pygame.image.load(os.path.join("images\world-1", "sky.png"))
-# skyRect = skyImg.get_rect()
 
 
 class SuperJumpWorld:
@@ -75,16 +70,17 @@ class SuperJumpWorld:
     def screenUpdater(self, character, characterRect, skyRect):
         self.screen.fill((200, 255, 255))
 
-        groundImg = visualizationService.get_world1("ground")
-        groundRect = groundImg.get_rect()
+        # groundImg = visualizationService.get_world1("ground")
+        # groundRect = groundImg.get_rect()
 
         skyImg = visualizationService.get_world1("sky")
         pyramids = visualizationService.get_world1("pyramids")
 
         self.screen.blit(skyImg, (skyRect.x, skyRect.y))
         self.screen.blit(pyramids, pyramids.get_rect())
-        self.screen.blit(groundImg, groundRect)
-
+        # self.screen.blit(groundImg, groundRect)
+        level = Level(level_map1, self.screen)
+        level.run()
         self.screen.blit(character, (characterRect.x, characterRect.y))
 
         pygame.display.update()
@@ -95,7 +91,7 @@ class SuperJumpWorld:
     def playerMovement(
         self, keyPressed, rect
     ):  # Takes the users inputs to move the player
-        if keyPressed[pygame.K_a]:  # to move the player
+        if keyPressed[pygame.K_a] and rect.x - self.velocity > 0:
             rect.x -= self.velocity
         elif keyPressed[pygame.K_d]:
             rect.x += self.velocity

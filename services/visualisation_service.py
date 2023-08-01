@@ -18,7 +18,9 @@ class visualizationService:
 
     @staticmethod
     def get_lemon_character():
-        return pygame.image.load(os.path.join("images", "lemon-egg.png"))
+        lemon = pygame.image.load(os.path.join("images", "lemon-egg.png"))
+        lemon = pygame.transform.scale(lemon, (90, 80))
+        return lemon
 
     @staticmethod
     def get_world1(needs=False):
