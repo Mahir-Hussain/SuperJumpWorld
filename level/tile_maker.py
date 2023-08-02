@@ -1,5 +1,4 @@
 import pygame
-from pygame.sprite import Group
 
 
 class Tile(pygame.sprite.Sprite):
@@ -8,3 +7,6 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.Surface((size, size))
         self.image.fill("gray")
         self.rect = self.image.get_rect(topleft=pos)
+
+    def update(self, xShift):
+        self.rect.x += xShift

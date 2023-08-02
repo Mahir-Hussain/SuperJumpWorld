@@ -17,10 +17,13 @@ class visualizationService:
         return pygame.image.load(os.path.join("images", "menu.png")).convert()
 
     @staticmethod
-    def get_lemon_character():
+    def get_lemon_character(orientation="right"):
         lemon = pygame.image.load(os.path.join("images", "lemon-egg.png"))
-        lemon = pygame.transform.scale(lemon, (90, 80))
-        return lemon
+        lemon = pygame.transform.scale(lemon, (64, 64))
+        if orientation == "right":
+            return lemon
+        elif orientation == "left":
+            return pygame.transform.flip(lemon, True, False)
 
     @staticmethod
     def get_world1(needs=False):
