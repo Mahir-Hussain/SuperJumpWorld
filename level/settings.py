@@ -1,15 +1,15 @@
 levelMap = [
     "                                        ",
-    "                        XXXXXXXX        ",
-    "                                       ",
-    "    XXXXX             XXXXXXXXXXXXX     ",
     "                                        ",
-    "P                                        ",
-    "XXXXXXXXXX                              ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "                                        ",
+    "                                        ",
+    "                              XXX       ",
+    "                                        ",
+    "        XXXXXXXXX          XXXXXXXX     ",
+    "                                        ",
+    "  P                                     ",
+    "XXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXXXX",
+    "XXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXXXX",
 ]
 
 

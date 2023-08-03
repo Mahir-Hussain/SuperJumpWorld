@@ -8,5 +8,5 @@ class Tile(pygame.sprite.Sprite):
         self.image.fill("gray")
         self.rect = self.image.get_rect(topleft=pos)
 
-    def update(self, xShift):
+    def update(self, xShift):  # Moves the world based on player movement
         self.rect.x += xShift

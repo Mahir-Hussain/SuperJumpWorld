@@ -3,7 +3,7 @@ import os
 import pygame
 
 
-class visualizationService:
+class visualizationService:  # Loads images to other files.
     @staticmethod
     def get_icon():
         return pygame.image.load(os.path.join("images", "icon.png")).convert()
@@ -19,7 +19,7 @@ class visualizationService:
     @staticmethod
     def get_lemon_character(orientation="right"):
         lemon = pygame.image.load(os.path.join("images", "lemon-egg.png"))
-        lemon = pygame.transform.scale(lemon, (64, 64))
+        lemon = pygame.transform.scale(lemon, (60, 50))
         if orientation == "right":
             return lemon
         elif orientation == "left":
