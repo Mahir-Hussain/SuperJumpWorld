@@ -7,6 +7,10 @@ from level.levels import Level
 from level.settings import *
 from services.visualisation_service import visualizationService
 
+## //TODO
+## Change world movement when the player is going left
+## Reflect these changes in the project docs
+
 
 class SuperJumpWorld:
     def __init__(self):
