@@ -3,16 +3,16 @@ levelMap = [
     "                                        ",
     "                                        ",
     "                                        ",
-    "                              XXX       ",
+    "                              SSS       ",
     "                                        ",
-    "        XXXXXXXXX          XXXXXXXX     ",
+    "        SSSSSSSSS          SSSSSSSS     ",
     "                                        ",
     "  P                                     ",
-    "XXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXXXX",
-    "XXXXXXXXXXXXXXXXXXXXX  XXXXXXXXXXXXXXXXX",
+    "GGGGGGGGGGGGGGGGGGGGG  GGGGGGGGGGGGGGGGG",
+    "UUUUUUUUUUUUUUUUUUUUU  UUUUUUUUUUUUUUUUU",
 ]
 
 
 tileSize = 37
 screenWidth = 700
-screenHeight = len(levelMap) * tileSize
+screenHeight = len(levelMap) * tileSize  # around 400

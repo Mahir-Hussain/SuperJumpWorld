@@ -7,14 +7,10 @@ from level.levels import Level
 from level.settings import *
 from services.visualisation_service import visualizationService
 
-# self.width = 700
-# self.height = 400
-
 
 class SuperJumpWorld:
     def __init__(self):
         self.screen = pygame.display.set_mode((screenWidth, screenHeight))
-        # self.orientation = "right" # default player orientation
         self.game = False
         self.start = False
         self.characterRect = visualizationService.get_lemon_character().get_rect()

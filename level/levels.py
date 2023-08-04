@@ -19,8 +19,14 @@ class Level:  # Creates the level using settings.py
             for colIndex, col in enumerate(row):
                 x = colIndex * tileSize
                 y = rowIndex * tileSize
-                if col == "X":
-                    tile = Tile((x, y), tileSize)
+                if col == "G":
+                    tile = Tile((x, y), col)
+                    self.tiles.add(tile)
+                if col == "S":
+                    tile = Tile((x, y), col)
+                    self.tiles.add(tile)
+                if col == "U":
+                    tile = Tile((x, y), col)
                     self.tiles.add(tile)
                 if col == "P":
                     playerSprite = Player((x, y))
@@ -30,11 +36,11 @@ class Level:  # Creates the level using settings.py
         player = self.player.sprite
         playerX = player.rect.centerx
         direction = player.rect.x
-        if playerX < screenWidth / 4 and direction < 0:
-            self.worldShift = 5
+        if playerX < 300 and direction < 0 and player.movement == True:
+            self.worldShift = 3
             Player.velocity = 0
-        elif playerX > screenWidth - screenWidth / 4 and direction > 0:
-            self.worldShift = -5
+        elif playerX > 350 and direction > 0 and player.movement == True:
+            self.worldShift = -3
             Player.velocity = 0
         else:
             self.worldShift = 0

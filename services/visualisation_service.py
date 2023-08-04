@@ -26,6 +26,18 @@ class visualizationService:  # Loads images to other files.
             return pygame.transform.flip(lemon, True, False)
 
     @staticmethod
+    def get_grass():
+        return pygame.image.load(os.path.join("images/tiles", "grass.png"))
+
+    @staticmethod
+    def get_underGrass():
+        return pygame.image.load(os.path.join("images/tiles", "under-grass.png"))
+
+    @staticmethod
+    def get_stone():
+        return pygame.image.load(os.path.join("images/tiles", "stone.png"))
+
+    @staticmethod
     def get_world1(needs=False):
         ground = pygame.image.load(os.path.join("images\world-1", "ground.png"))
         sky = pygame.image.load(os.path.join("images\world-1", "sky.png"))
