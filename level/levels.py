@@ -19,32 +19,38 @@ class Level:  # Creates the level using settings.py
             for colIndex, col in enumerate(row):
                 x = colIndex * tileSize
                 y = rowIndex * tileSize
-                if col == "G":
+                if col == "G":  # Adds grass
                     tile = Tile((x, y), col)
                     self.tiles.add(tile)
-                if col == "S":
+                if col == "S":  # Adds stone
                     tile = Tile((x, y), col)
                     self.tiles.add(tile)
-                if col == "U":
+                if col == "U":  # Adds "under-grass"
                     tile = Tile((x, y), col)
                     self.tiles.add(tile)
-                if col == "P":
+                if col == "P":  # "Adds the player
                     playerSprite = Player((x, y))
                     self.player.add(playerSprite)
 
-    def levelMovement(self):
+    def levelMovement(self):  # Moves the level around the player
         player = self.player.sprite
         playerX = player.rect.centerx
         direction = player.rect.x
-        if playerX < 300 and direction < 0 and player.movement == True:
+
+        if playerX < 175 and direction < 0 and player.movement == True:
             self.worldShift = 3
             Player.velocity = 0
-        elif playerX > 350 and direction > 0 and player.movement == True:
+        elif (
+            playerX > 350
+            and direction > 0
+            and player.movement == True
+            and player.left == False
+        ):
             self.worldShift = -3
             Player.velocity = 0
         else:
             self.worldShift = 0
-            Player.velocity = 5
+            Player.velocity = 2
 
     def collisionX(self):  # Collisions in X direction
         player = self.player.sprite
@@ -67,6 +73,7 @@ class Level:  # Creates the level using settings.py
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
+                    player.jump = True
                 elif player.direction.y < 0:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0

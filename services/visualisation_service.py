@@ -3,7 +3,7 @@ import os
 import pygame
 
 
-class visualizationService:  # Loads images to other files.
+class visualizationService:  # Loads images to other files. Can be used to get_rect as well
     @staticmethod
     def get_icon():
         return pygame.image.load(os.path.join("images", "icon.png")).convert()

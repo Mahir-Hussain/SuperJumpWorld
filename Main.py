@@ -7,16 +7,22 @@ from level.levels import Level
 from level.settings import *
 from services.visualisation_service import visualizationService
 
-## //TODO
-## Change world movement when the player is going left
-## Reflect these changes in the project docs
+## TODO
+## Add Jump Mechanic
+## Add enemy sprites + logic
+## Add an actual level
+## Add the sky moving - possible function
+## Reflect changes in documentation
+##
 
 
-class SuperJumpWorld:
+class SuperJumpWorld:  # Main class
     def __init__(self):
         self.screen = pygame.display.set_mode((screenWidth, screenHeight))
+        # Initialize
         self.game = False
         self.start = False
+        # ScreenUpdater
         self.characterRect = visualizationService.get_lemon_character().get_rect()
         self.skyRect = visualizationService.get_world1("sky").get_rect()
         self.level = Level(levelMap, self.screen)
@@ -45,12 +51,11 @@ class SuperJumpWorld:
                     # self.characterRect,
                     self.skyRect,
                 )
-            clock.tick(60)
+            clock.tick(60)  # FPS at 60
 
     def startup(self, keyPressed):  # Displays the startup and menu screen.
-        if self.start == False:  # Goes to startup screen
+        if self.start == False:  # Goes to startup screenw
             startImg = visualizationService.get_startup()
-            # pygame.transform.scale(startImg, (self.width, self.height))
             rect = startImg.get_rect()
 
             self.screen.blit(startImg, rect)
@@ -58,7 +63,6 @@ class SuperJumpWorld:
 
         if keyPressed[pygame.K_p]:  # Goes to menu
             menuImg = visualizationService.get_menu()
-            # pygame.transform.scale(menuImg, (self.width, self.height))
             rect = menuImg.get_rect()
 
             self.screen.fill((0, 0, 0))
@@ -72,7 +76,7 @@ class SuperJumpWorld:
     # def screenUpdater(self, character, characterRect, skyRect):
     def screenUpdater(
         self, skyRect
-    ):  # Updates the screen with background, player and level
+    ):  # Updates the screen with background and runs level
         self.screen.fill((200, 255, 255))
 
         # groundImg = visualizationService.get_world1("ground")
@@ -84,7 +88,7 @@ class SuperJumpWorld:
         self.screen.blit(skyImg, (skyRect.x, skyRect.y))
         self.screen.blit(pyramids, pyramids.get_rect())
         # self.screen.blit(groundImg, groundRect)
-        self.level.run()
+        self.level.run()  # Runs the level.run() command found in level/levels.py
         # self.screen.blit(character, (characterRect.x, characterRect.y))
 
         pygame.display.update()
