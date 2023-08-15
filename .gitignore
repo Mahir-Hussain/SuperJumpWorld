@@ -1,5 +1,7 @@
 .venv
-old
 .mypy_cache
 services.__pycache__
 test.py
+main copy.py
+services/__pycache__
+level/__pycache__

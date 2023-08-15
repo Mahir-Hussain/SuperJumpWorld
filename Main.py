@@ -22,17 +22,17 @@ class SuperJumpWorld:  # Main class
         # Initialize
         self.game = False
         self.start = False
-        # ScreenUpdater
         self.level = Level(levelMap, self.screen)
 
     def initialize(self):  # Opens the pygame window
         pygame.init()
         clock = pygame.time.Clock()
         while True:
+            # Setting the pygame window up
             pygame.display.set_caption("Super Jump World")
             pygame.display.set_icon(visualizationService.get_icon())
 
-            keys = pygame.key.get_pressed()
+            keys = pygame.key.get_pressed()  # To get user input
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -41,60 +41,45 @@ class SuperJumpWorld:  # Main class
             self.startup(keys)
 
             if self.game == True:
-                # self.playerMovement(keys, self.characterRect)
-                # self.worldMovement(self.skyRect)
+                self.screenUpdater()
 
-                self.screenUpdater(
-                    # visualizationService.get_lemon_character(self.orientation),
-                    # self.characterRect,
-                    # self.skyRect,
-                )
             clock.tick(60)  # FPS at 60
 
     def startup(self, keyPressed):  # Displays the startup and menu screen.
+        self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
         if self.start == False:  # Goes to startup screen
+            # Images
             startImg = visualizationService.get_startup()
             rect = startImg.get_rect()
-
+            # Drawing
             self.screen.blit(startImg, rect)
             pygame.display.update()
 
         if keyPressed[pygame.K_p]:  # Goes to menu
+            # Images
             menuImg = visualizationService.get_menu()
             rect = menuImg.get_rect()
-
-            self.screen.fill((0, 0, 0))
+            # Drawing
             self.screen.blit(menuImg, rect)
             pygame.display.update()
+
             self.start = True
 
         if self.start and keyPressed[pygame.K_1]:  # Goes to main game
             self.game = True
 
-    # def screenUpdater(self, character, characterRect, skyRect):
-    def screenUpdater(
-        self,  # , skyRect
-    ):  # Updates the screen with background and runs level
-        self.screen.fill((200, 255, 255))
-
-        # groundImg = visualizationService.get_world1("ground")
-        # groundRect = groundImg.get_rect()
-
+    def screenUpdater(self):
+        self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
+        # World images
         skyImg = visualizationService.get_world1("sky")
         pyramids = visualizationService.get_world1("pyramids")
-
         skyRect = visualizationService.get_world1("sky").get_rect()
-
+        # World drawing
         self.screen.blit(skyImg, (skyRect.x, skyRect.y))
         self.screen.blit(pyramids, pyramids.get_rect())
-        # self.screen.blit(groundImg, groundRect)
+        # level drawing
         self.level.run()  # Runs the level.run() command found in level/levels.py
-        # self.screen.blit(character, (characterRect.x, characterRect.y))
-
         pygame.display.update()
-
-    # def worldMovement(self, skyRect):
-    #     skyRect.x -= 1
 
 
 if __name__ == "__main__":
