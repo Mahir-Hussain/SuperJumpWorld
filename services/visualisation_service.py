@@ -26,6 +26,10 @@ class visualizationService:  # Loads images to other files. Can be used to get_r
             return pygame.transform.flip(lemon, True, False)
 
     @staticmethod
+    def get_mbox():
+        return pygame.image.load(os.path.join("images/tiles", "mbox.png"))
+
+    @staticmethod
     def get_grass():
         return pygame.image.load(os.path.join("images/tiles", "grass.png"))
 

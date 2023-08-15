@@ -23,8 +23,6 @@ class SuperJumpWorld:  # Main class
         self.game = False
         self.start = False
         # ScreenUpdater
-        self.characterRect = visualizationService.get_lemon_character().get_rect()
-        self.skyRect = visualizationService.get_world1("sky").get_rect()
         self.level = Level(levelMap, self.screen)
 
     def initialize(self):  # Opens the pygame window
@@ -49,12 +47,12 @@ class SuperJumpWorld:  # Main class
                 self.screenUpdater(
                     # visualizationService.get_lemon_character(self.orientation),
                     # self.characterRect,
-                    self.skyRect,
+                    # self.skyRect,
                 )
             clock.tick(60)  # FPS at 60
 
     def startup(self, keyPressed):  # Displays the startup and menu screen.
-        if self.start == False:  # Goes to startup screenw
+        if self.start == False:  # Goes to startup screen
             startImg = visualizationService.get_startup()
             rect = startImg.get_rect()
 
@@ -75,7 +73,7 @@ class SuperJumpWorld:  # Main class
 
     # def screenUpdater(self, character, characterRect, skyRect):
     def screenUpdater(
-        self, skyRect
+        self,  # , skyRect
     ):  # Updates the screen with background and runs level
         self.screen.fill((200, 255, 255))
 
@@ -84,6 +82,8 @@ class SuperJumpWorld:  # Main class
 
         skyImg = visualizationService.get_world1("sky")
         pyramids = visualizationService.get_world1("pyramids")
+
+        skyRect = visualizationService.get_world1("sky").get_rect()
 
         self.screen.blit(skyImg, (skyRect.x, skyRect.y))
         self.screen.blit(pyramids, pyramids.get_rect())
