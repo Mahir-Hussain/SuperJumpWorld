@@ -28,6 +28,9 @@ class Level:  # Creates the level using settings.py
                 if col == "U":  # Adds "under-grass"
                     tile = Tile((x, y), col)
                     self.tiles.add(tile)
+                if col == "M":  # Adds mysterybox
+                    tile = Tile((x, y), col)
+                    self.tiles.add(tile)
                 if col == "P":  # "Adds the player
                     playerSprite = Player((x, y))
                     self.player.add(playerSprite)

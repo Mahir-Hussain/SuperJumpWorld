@@ -21,3 +21,5 @@ class Tile(pygame.sprite.Sprite):  # Places tiles in the window
             return visualizationService.get_underGrass()
         elif tileType == "S":
             return visualizationService.get_stone()
+        elif tileType == "M":
+            return visualizationService.get_mbox()
