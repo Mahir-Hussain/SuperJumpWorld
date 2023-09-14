@@ -41,19 +41,19 @@ class Level:  # Creates the level using settings.py
         direction = player.rect.x
 
         if playerX < 175 and direction < 0 and player.movement == True:
-            self.worldShift = 3
-            Player.velocity = 0
+            self.worldShift = 5
+            player.velocity = 0
         elif (
             playerX > 350
             and direction > 0
             and player.movement == True
             and player.left == False
         ):
-            self.worldShift = -3
-            Player.velocity = 0
+            self.worldShift = -5
+            player.velocity = 0
         else:
             self.worldShift = 0
-            Player.velocity = 2
+            player.velocity = 5
 
     def collisionX(self):  # Collisions in X direction
         player = self.player.sprite
