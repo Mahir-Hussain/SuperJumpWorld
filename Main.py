@@ -8,7 +8,6 @@ from level.settings import *
 from services.visualisation_service import visualizationService
 
 ## TODO
-## Add Jump Mechanic
 ## Add enemy sprites + logic
 ## Add an actual level
 ## Add the sky moving - possible function
