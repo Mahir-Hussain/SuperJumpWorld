@@ -10,6 +10,10 @@ from services.visualisation_service import visualizationService
 ## TODO
 ## Add enemy sprites + logic
 ## Add an actual level
+## Death screen - go back to the level
+## Enemies
+## Time
+## Sound
 ## Add the sky moving - possible function
 ## Reflect changes in documentation
 ##
@@ -42,7 +46,7 @@ class SuperJumpWorld:  # Main class
             if self.game == True:
                 self.screenUpdater()
 
-            clock.tick(60)  # FPS at 60
+            clock.tick(120)  # FPS at 60
 
     def startup(self, keyPressed):  # Displays the startup and menu screen.
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
@@ -66,6 +70,12 @@ class SuperJumpWorld:  # Main class
 
         if self.start and keyPressed[pygame.K_1]:  # Goes to main game
             self.game = True
+        elif self.start and keyPressed[pygame.K_2]:  # Goes to leaderboard
+            pass
+        elif self.start and keyPressed[pygame.K_3]:  # Goes to settings
+            pass
+        elif self.start and keyPressed[pygame.K_4]:  # Goes to main game
+            pass
 
     def screenUpdater(self):
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on

@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.jumpCount = 0
         self.jumpMax = 25
         # Velocities
-        self.velocity = 5
+        self.velocity = 7
         self.gravityVel = 4
 
     def orientation(self, orientation):  # Changes the player image when pressing A,D
@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         keyPressed = pygame.key.get_pressed()
         self.movement = False
 
-        if keyPressed[pygame.K_a] and self.rect.x - self.velocity > 0:
+        if keyPressed[pygame.K_a]:  # and self.rect.x - self.velocity > 0:
             self.orientation("left")
             self.movement = True
             self.direction.x = -1
