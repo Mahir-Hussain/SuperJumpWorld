@@ -1,5 +1,6 @@
 import pygame
 
+from services.sound_service import soundService
 from services.visualisation_service import visualizationService
 
 
@@ -14,7 +15,8 @@ class Player(pygame.sprite.Sprite):
         self.movement = False
         self.jump = True
         self.jumpCount = 0
-        self.jumpMax = 25
+        self.jumpMax = 24
+        self.death = False
         # Velocities
         self.velocity = 7
         self.gravityVel = 4
@@ -39,7 +41,10 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if keyPressed[pygame.K_w] and self.jump:
+        if (
+            keyPressed[pygame.K_SPACE] and self.jump and self.rect.y - self.jumpMax > 0
+        ):  #
+            soundService.get_jump()
             self.jumpMechanic()
 
     def jumpMechanic(self):  # Player jumping
@@ -53,6 +58,15 @@ class Player(pygame.sprite.Sprite):
     def gravity(self):  # Applies gravity to the player
         self.direction.y -= -self.gravityVel
         self.rect.y += self.direction.y
+    
+    def deathCheck(self):
+        if self.death == False and self.rect.y > 700:
+            soundService.get_death()
+            self.death = True
+
+    def r(self):
+        return self.death
+            
 
     def update(self):
         self.playerMovement()

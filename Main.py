@@ -5,6 +5,8 @@ from pygame.locals import *
 
 from level.levels import Level
 from level.settings import *
+from services.player import Player
+from services.sound_service import soundService
 from services.visualisation_service import visualizationService
 
 ## TODO
@@ -29,7 +31,12 @@ class SuperJumpWorld:  # Main class
 
     def initialize(self):  # Opens the pygame window
         pygame.init()
+        soundService.get_background()
         clock = pygame.time.Clock()
+        # World images
+        skyImg = visualizationService.get_world1("sky")
+        pyramids = visualizationService.get_world1("pyramids")
+        # skyRect = visualizationService.get_world1("sky").get_rect()
         while True:
             # Setting the pygame window up
             pygame.display.set_caption("Super Jump World")
@@ -44,9 +51,11 @@ class SuperJumpWorld:  # Main class
             self.startup(keys)
 
             if self.game == True:
-                self.screenUpdater()
+                self.screenUpdater(skyImg, pyramids)
+            if keys[pygame.K_0]:
+                SuperJumpWorld().initialize()
 
-            clock.tick(120)  # FPS at 60
+            clock.tick(30)  # FPS at 30
 
     def startup(self, keyPressed):  # Displays the startup and menu screen.
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
@@ -58,7 +67,7 @@ class SuperJumpWorld:  # Main class
             self.screen.blit(startImg, rect)
             pygame.display.update()
 
-        if keyPressed[pygame.K_p]:  # Goes to menu
+        if keyPressed[pygame.K_p] and self.game == False:  # Goes to menu
             # Images
             menuImg = visualizationService.get_menu()
             rect = menuImg.get_rect()
@@ -68,23 +77,24 @@ class SuperJumpWorld:  # Main class
 
             self.start = True
 
-        if self.start and keyPressed[pygame.K_1]:  # Goes to main game
-            self.game = True
-        elif self.start and keyPressed[pygame.K_2]:  # Goes to leaderboard
-            pass
-        elif self.start and keyPressed[pygame.K_3]:  # Goes to settings
-            pass
-        elif self.start and keyPressed[pygame.K_4]:  # Goes to main game
-            pass
+        if self.start:
+            self.menu(keyPressed)
 
-    def screenUpdater(self):
+    def menu(self, keyPressed):
+        if keyPressed[pygame.K_1]:  # Goes to main game
+            self.game = True
+        elif keyPressed[pygame.K_2]:  # Goes to leaderboard
+            pass
+        elif keyPressed[pygame.K_3]:  # Goes to settings
+            pass
+        elif keyPressed[pygame.K_4]:  # Exits the game
+            exit()
+
+    def screenUpdater(self, skyImg, pyramids):
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
-        # World images
-        skyImg = visualizationService.get_world1("sky")
-        pyramids = visualizationService.get_world1("pyramids")
-        skyRect = visualizationService.get_world1("sky").get_rect()
         # World drawing
-        self.screen.blit(skyImg, (skyRect.x, skyRect.y))
+        # self.screen.blit(skyImg, (skyRect.x, skyRect.y))
+        self.screen.blit(skyImg, skyImg.get_rect())
         self.screen.blit(pyramids, pyramids.get_rect())
         # level drawing
         self.level.run()  # Runs the level.run() command found in level/levels.py

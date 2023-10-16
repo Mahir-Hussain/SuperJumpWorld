@@ -18,7 +18,7 @@ class visualizationService:  # Loads images to other files. Can be used to get_r
 
     @staticmethod
     def get_lemon_character(orientation="right"):
-        lemon = pygame.image.load(os.path.join("images", "lemon-egg.png"))
+        lemon = pygame.image.load(os.path.join("images/characters", "lemon-egg.png"))
         lemon = pygame.transform.scale(lemon, (60, 50))
         if orientation == "right":
             return lemon
@@ -54,3 +54,13 @@ class visualizationService:  # Loads images to other files. Can be used to get_r
             return ground
         if needs == "pyramids":
             return pyramids
+
+    @staticmethod
+    def get_enemy():
+        enemy = pygame.image.load(os.path.join("images\characters", "enemy-sword.png"))
+        enemy = pygame.transform.scale(enemy, (60, 50))
+        return enemy
+
+    @staticmethod
+    def get_gameOver():
+        return pygame.image.load(os.path.join("images\extras"), "game-over.png")
