@@ -46,14 +46,45 @@ class visualizationService:  # Loads images to other files. Can be used to get_r
         ground = pygame.image.load(os.path.join("images\world-1", "ground.png"))
         sky = pygame.image.load(os.path.join("images\world-1", "sky.png"))
         pyramids = pygame.image.load(os.path.join("images\world-1", "pyramids.png"))
+        world = pygame.image.load(os.path.join("images\world-1", "world-1.png"))
         if needs == "all":
             return ground, pyramids, sky
-        if needs == "sky":
+        elif needs == "world":
+            return world
+        elif needs == "sky":
             return sky
-        if needs == "ground":
+        elif needs == "ground":
             return ground
-        if needs == "pyramids":
+        elif needs == "pyramids":
             return pyramids
+
+    @staticmethod
+    def get_world2(needs=False):
+        background = pygame.image.load(os.path.join("images\world-2", "background.png"))
+        sky = pygame.image.load(os.path.join("images\world-2", "sky.png"))
+        world = pygame.image.load(os.path.join("images\world-2", "world-2.png"))
+        if needs == "all":
+            return background, sky
+        elif needs == "world":
+            return world
+        elif needs == "background":
+            return background
+        elif needs == "sky":
+            return sky
+
+    @staticmethod
+    def get_world3(needs=False):
+        background = pygame.image.load(os.path.join("images\world-3", "background.png"))
+        sky = pygame.image.load(os.path.join("images\world-3", "sky.png"))
+        world = pygame.image.load(os.path.join("images\world-3", "world-3.png"))
+        if needs == "all":
+            return background, sky
+        elif needs == "world":
+            return world
+        elif needs == "background":
+            return background
+        elif needs == "sky":
+            return sky
 
     @staticmethod
     def get_enemy():
@@ -63,4 +94,4 @@ class visualizationService:  # Loads images to other files. Can be used to get_r
 
     @staticmethod
     def get_gameOver():
-        return pygame.image.load(os.path.join("images\extras"), "game-over.png")
+        return pygame.image.load(os.path.join("images", "game-over.png"))

@@ -1,11 +1,11 @@
+import random
 from sys import exit
 
 import pygame
 from pygame.locals import *
 
+import level.settings as settings
 from level.levels import Level
-from level.settings import *
-from services.player import Player
 from services.sound_service import soundService
 from services.visualisation_service import visualizationService
 
@@ -23,37 +23,50 @@ from services.visualisation_service import visualizationService
 
 class SuperJumpWorld:  # Main class
     def __init__(self):
-        self.screen = pygame.display.set_mode((screenWidth, screenHeight))
+        self.screen = pygame.display.set_mode(
+            (settings.screenWidth, settings.screenHeight)
+        )
         # Initialize
         self.game = False
         self.start = False
-        self.level = Level(levelMap, self.screen)
+        self.worldChoice = random.randint(1, 3)
+        self.level = Level(self.screen)
+
+    def worldChooser(self):
+        if self.worldChoice == 1:
+            skyImg = visualizationService.get_world1("sky")
+            pyramids = visualizationService.get_world1("pyramids")
+            return skyImg, pyramids
+        elif self.worldChoice == 2:
+            skyImg = visualizationService.get_world2("sky")
+            background = visualizationService.get_world2("background")
+            return skyImg, background
+        elif self.worldChoice == 3:
+            skyImg = visualizationService.get_world3("sky")
+            background = visualizationService.get_world3("background")
+            return skyImg, background
 
     def initialize(self):  # Opens the pygame window
         pygame.init()
-        soundService.get_background()
         clock = pygame.time.Clock()
         # World images
-        skyImg = visualizationService.get_world1("sky")
-        pyramids = visualizationService.get_world1("pyramids")
+        skyImg, background = self.worldChooser()
         # skyRect = visualizationService.get_world1("sky").get_rect()
         while True:
             # Setting the pygame window up
             pygame.display.set_caption("Super Jump World")
             pygame.display.set_icon(visualizationService.get_icon())
 
-            keys = pygame.key.get_pressed()  # To get user input
+            self.keys = pygame.key.get_pressed()  # To get user input
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit()
 
-            self.startup(keys)
+            self.startup(self.keys)
 
             if self.game == True:
-                self.screenUpdater(skyImg, pyramids)
-            if keys[pygame.K_0]:
-                SuperJumpWorld().initialize()
+                self.screenUpdater(skyImg, background)
 
             clock.tick(30)  # FPS at 30
 
@@ -78,27 +91,42 @@ class SuperJumpWorld:  # Main class
             self.start = True
 
         if self.start:
-            self.menu(keyPressed)
+            self.menu()
 
-    def menu(self, keyPressed):
-        if keyPressed[pygame.K_1]:  # Goes to main game
+    def menu(self):
+        if self.keys[pygame.K_1]:  # Goes to main game
             self.game = True
-        elif keyPressed[pygame.K_2]:  # Goes to leaderboard
+        elif self.keys[pygame.K_2]:  # Goes to leaderboard
             pass
-        elif keyPressed[pygame.K_3]:  # Goes to settings
+        elif self.keys[pygame.K_3]:  # Goes to settings
             pass
-        elif keyPressed[pygame.K_4]:  # Exits the game
+        elif self.keys[pygame.K_4]:  # Exits the game
             exit()
 
-    def screenUpdater(self, skyImg, pyramids):
+    def screenUpdater(self, skyImg, background):
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
-        # World drawing
-        # self.screen.blit(skyImg, (skyRect.x, skyRect.y))
-        self.screen.blit(skyImg, skyImg.get_rect())
-        self.screen.blit(pyramids, pyramids.get_rect())
-        # level drawing
-        self.level.run()  # Runs the level.run() command found in level/levels.py
+        if settings.death == False:
+            # World drawing
+            # self.screen.blit(skyImg, (skyRect.x, skyRect.y))
+            self.screen.blit(skyImg, skyImg.get_rect())
+            self.screen.blit(background, background.get_rect())
+            # level drawing
+            self.level.run()  # Runs the level.run() command found in level/levels.py
+        else:
+            self.onDeath()
         pygame.display.update()
+
+    def onDeath(self):
+        # Images
+        gameOver = visualizationService.get_gameOver()
+        # Drawing
+        self.screen.blit(gameOver, gameOver.get_rect())
+        # Restart game
+        if self.keys[pygame.K_c]:
+            settings.death = False
+            self.game = False
+            self.level = Level(self.screen)
+            SuperJumpWorld().startup(self.keys)
 
 
 if __name__ == "__main__":

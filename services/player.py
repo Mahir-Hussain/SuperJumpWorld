@@ -1,5 +1,6 @@
 import pygame
 
+import level.settings as settings
 from services.sound_service import soundService
 from services.visualisation_service import visualizationService
 
@@ -16,7 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.jump = True
         self.jumpCount = 0
         self.jumpMax = 24
-        self.death = False
         # Velocities
         self.velocity = 7
         self.gravityVel = 4
@@ -41,10 +41,9 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if (
-            keyPressed[pygame.K_SPACE] and self.jump and self.rect.y - self.jumpMax > 0
-        ):  #
-            soundService.get_jump()
+        if keyPressed[
+            pygame.K_SPACE
+        ]:  # and self.jump and self.rect.y - self.jumpMax > 0:
             self.jumpMechanic()
 
     def jumpMechanic(self):  # Player jumping
@@ -58,18 +57,15 @@ class Player(pygame.sprite.Sprite):
     def gravity(self):  # Applies gravity to the player
         self.direction.y -= -self.gravityVel
         self.rect.y += self.direction.y
-    
-    def deathCheck(self):
-        if self.death == False and self.rect.y > 700:
-            soundService.get_death()
-            self.death = True
 
-    def r(self):
-        return self.death
-            
+    def deathCheck(self):
+        if self.rect.y > settings.screenHeight and settings.death == False:
+            settings.death = True
 
     def update(self):
+        self.deathCheck()
         self.playerMovement()
-        # self.rect.x += self.direction.x * self.velocity
-        # self.rect.y += self.direction.y
-        # self.gravity()
+        # self.direction represents 1s and 0s.
+        # When it is 1, the player moves at the given velocity value
+        # The player moving on the screen is handled in the
+        # level/levels.py collisionX/Y function

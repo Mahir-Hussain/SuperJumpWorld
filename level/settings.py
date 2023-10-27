@@ -12,7 +12,7 @@ levelMap = [
     "UUUUUUUUUUUUUUUUUUUU  UUUUUUUUUUUUUUUUU  S  S  S  S  UUUUUUUUUUUUUUU  S  UUUUUUUUUUUUUUU      UUUUUUUUUUUUUUUUU",
 ]
 
-
 tileSize = 37  # tiles are 37x37
-screenWidth = 700
-screenHeight = len(levelMap) * tileSize  # around 400
+screenWidth = 800
+screenHeight = 15 * tileSize  # around 555
+death = False
