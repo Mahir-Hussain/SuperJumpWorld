@@ -48,5 +48,8 @@ class Enemy(pygame.sprite.Sprite):
         self.direction.y -= -self.gravityVel
         self.rect.y += self.direction.y
 
+    def yeet(self):
+        self.rect.y = 1000
+
     def update(self):
         self.enemyMovement()

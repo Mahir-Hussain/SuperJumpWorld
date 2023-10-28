@@ -46,7 +46,13 @@ class SuperJumpWorld:  # Main class
             background = visualizationService.get_world3("background")
             return skyImg, background
 
-    def initialize(self):  # Opens the pygame window
+    def initialize(self):
+        """
+        Opens the pygame window.
+        Runs throughout the duration of the game being
+        opened.
+        Runs different functions depending on variable boolean states
+        """
         pygame.init()
         clock = pygame.time.Clock()
         # World images
@@ -70,7 +76,10 @@ class SuperJumpWorld:  # Main class
 
             clock.tick(30)  # FPS at 30
 
-    def startup(self, keyPressed):  # Displays the startup and menu screen.
+    def startup(self, keyPressed):
+        """
+        Displays the startup and menu screen.
+        """
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
         if self.start == False:  # Goes to startup screen
             # Images
@@ -94,6 +103,10 @@ class SuperJumpWorld:  # Main class
             self.menu()
 
     def menu(self):
+        """
+        Changes variable names which change the
+        outcome of the initialize function
+        """
         if self.keys[pygame.K_1]:  # Goes to main game
             self.game = True
         elif self.keys[pygame.K_2]:  # Goes to leaderboard
@@ -104,6 +117,12 @@ class SuperJumpWorld:  # Main class
             exit()
 
     def screenUpdater(self, skyImg, background):
+        """
+        When the game is lauchned, this function is launched.
+        If player is not dead, run the game
+        If dead, show death screen
+        Game can be restarted if dead
+        """
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
         if settings.death == False:
             # World drawing
@@ -117,6 +136,10 @@ class SuperJumpWorld:  # Main class
         pygame.display.update()
 
     def onDeath(self):
+        """
+        When the player is dead,
+        this function handles what happens after
+        """
         # Images
         gameOver = visualizationService.get_gameOver()
         # Drawing

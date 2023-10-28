@@ -22,9 +22,18 @@ class Player(pygame.sprite.Sprite):
         self.gravityVel = 4
 
     def orientation(self, orientation):  # Changes the player image when pressing A,D
+        """
+        This function change the player
+        image when they press A or D (left/right)
+        """
         self.image = visualizationService.get_lemon_character(orientation)
 
     def playerMovement(self):
+        """
+        Handles the player movement.
+        self.direction represents 1s and 0s.
+        When it is 1, the player moves at the given velocity value
+        """
         keyPressed = pygame.key.get_pressed()
         self.movement = False
 
@@ -46,7 +55,11 @@ class Player(pygame.sprite.Sprite):
         ]:  # and self.jump and self.rect.y - self.jumpMax > 0:
             self.jumpMechanic()
 
-    def jumpMechanic(self):  # Player jumping
+    def jumpMechanic(self):
+        """
+        Handles the jumping mechanic
+        Jump is parabolic
+        """
         self.jumpCount = self.jumpMax
         if self.jump:
             self.direction.y -= self.jumpCount
@@ -54,18 +67,26 @@ class Player(pygame.sprite.Sprite):
                 self.jumpCount -= 1
         self.jump = False
 
-    def gravity(self):  # Applies gravity to the player
+    def gravity(self):
+        """
+        Applies gravity to the player
+        """
         self.direction.y -= -self.gravityVel
         self.rect.y += self.direction.y
 
     def deathCheck(self):
+        """
+        Checks if the player is off the screen
+        """
         if self.rect.y > settings.screenHeight and settings.death == False:
             settings.death = True
 
     def update(self):
+        """
+        self.direction represents 1s and 0s.
+        When it is 1, the player moves at the given velocity value
+        The player moving on the screen is handled in the
+        level/levels.py collisionX/Y function
+        """
         self.deathCheck()
         self.playerMovement()
-        # self.direction represents 1s and 0s.
-        # When it is 1, the player moves at the given velocity value
-        # The player moving on the screen is handled in the
-        # level/levels.py collisionX/Y function

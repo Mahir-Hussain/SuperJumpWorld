@@ -11,5 +11,8 @@ class Tile(pygame.sprite.Sprite):  # Places tiles in the window
         # )  # Changes image depending on letter given from level.setupLevel()
         self.rect = pygame.rect.Rect(pos, (10, 20))
 
-    def update(self, xShift):  # Moves the world based on player movement
+    def update(self, xShift):
+        """
+        Moves the world based on player movement
+        """
         self.rect.x += xShift

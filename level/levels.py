@@ -15,6 +15,11 @@ class Level:  # Creates the level using settings.py
         self.worldShift = 0  # Moves depending on player
 
     def setupLevel(self):
+        """
+        Adds player and enemy to the level
+        This gets the level data from the tmx file
+        and adds the tiles to the screen
+        """
         # Tile groups
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
@@ -29,7 +34,10 @@ class Level:  # Creates the level using settings.py
         playerSprite = Player((0, 0))
         self.player.add(playerSprite)
 
-    def levelMovement(self):  # Moves the level around the player
+    def levelMovement(self):
+        """
+        This moves the level around the player
+        """
         player = self.player.sprite
         playerX = player.rect.centerx
         direction = player.rect.x
@@ -49,7 +57,10 @@ class Level:  # Creates the level using settings.py
             self.worldShift = 0
             player.velocity = 7
 
-    def collisionX(self):  # Collisions in X direction
+    def collisionX(self):
+        """
+        Handles collisions in the X direction
+        """
         # Player X
         player = self.player.sprite
         player.rect.x += player.direction.x * player.velocity
@@ -64,7 +75,10 @@ class Level:  # Creates the level using settings.py
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
 
-    def collisionY(self):  # Collision in Y direction
+    def collisionY(self):
+        """
+        Handles collisions in the Y direction
+        """
         # Player Y
         player = self.player.sprite
         player.rect.y += player.direction.y
@@ -97,7 +111,12 @@ class Level:  # Creates the level using settings.py
         #     if enemy.rect.colliderect(player):
         #         enemy.yeet()
 
-    def run(self):  # Where all the drawing comes together
+    def run(self):
+        """
+        Where all the drawing comes together.
+        All functions found in this class is called here.
+        The run function is called in main.py
+        """
         # Level tiles
         self.tiles.update(self.worldShift)
         self.tiles.draw(self.displaySurface)
