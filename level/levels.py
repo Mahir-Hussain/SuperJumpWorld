@@ -1,44 +1,33 @@
 import pygame
+from pytmx.util_pygame import load_pygame
 
-from level.settings import screenWidth, tileSize
+from level.settings import tileSize
 from level.tile_maker import Tile
 from services.enemy import Enemy
 from services.player import Player
 
 
 class Level:  # Creates the level using settings.py
-    def __init__(self, levelData, surface):
+    def __init__(self, surface):
         # level setup
         self.displaySurface = surface
-        self.setupLevel(levelData)
+        self.setupLevel()
         self.worldShift = 0  # Moves depending on player
 
-    def setupLevel(self, layout):  # Loops over levelMap to add tiles
+    def setupLevel(self):
+        # Tile groups
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
-        self.enemy = pygame.sprite.Group()
-        for rowIndex, row in enumerate(layout):
-            for colIndex, col in enumerate(row):
-                x = colIndex * tileSize
-                y = rowIndex * tileSize
-                if col == "G":  # Adds grass
-                    tile = Tile((x, y), col)
+        # TMX info
+        self.tmx_data = load_pygame("level\levelMap\level1.tmx")
+        # Adding tiles to screen
+        for layer in self.tmx_data.layers:
+            if layer.name == "terrain":
+                for x, y, surf in layer.tiles():
+                    tile = Tile((x * tileSize, y * tileSize), surf)
                     self.tiles.add(tile)
-                if col == "S":  # Adds stone
-                    tile = Tile((x, y), col)
-                    self.tiles.add(tile)
-                if col == "U":  # Adds "under-grass"
-                    tile = Tile((x, y), col)
-                    self.tiles.add(tile)
-                if col == "M":  # Adds mysterybox
-                    tile = Tile((x, y), col)
-                    self.tiles.add(tile)
-                if col == "P":  # "Adds the player
-                    playerSprite = Player((x, y))
-                    self.player.add(playerSprite)
-                if col == "E":
-                    enemySprite = Enemy((x, y))
-                    self.enemy.add(enemySprite)
+        playerSprite = Player((0, 0))
+        self.player.add(playerSprite)
 
     def levelMovement(self):  # Moves the level around the player
         player = self.player.sprite
@@ -61,8 +50,12 @@ class Level:  # Creates the level using settings.py
             player.velocity = 7
 
     def collisionX(self):  # Collisions in X direction
+        # Player X
         player = self.player.sprite
         player.rect.x += player.direction.x * player.velocity
+        # Player Y
+        # enemy = self.enemy.sprite
+        # enemy.rect.x += enemy.direction.x * enemy.velocity
 
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
@@ -77,9 +70,9 @@ class Level:  # Creates the level using settings.py
         player.rect.y += player.direction.y
         player.gravity()
         # Enemy Y
-        enemy = self.enemy_sprites
-        enemy.rect.y += enemy.direction.y
-        enemy.gravity()
+        # enemy = self.enemy.sprite
+        # enemy.rect.y += enemy.direction.y
+        # enemy.gravity()
 
         for sprite in self.tiles.sprites():  # Player
             if sprite.rect.colliderect(player.rect):
@@ -91,20 +84,18 @@ class Level:  # Creates the level using settings.py
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
 
-        for sprite in self.tiles.sprites():  # Enemy
-            if sprite.rect.colliderect(enemy.rect):
-                if enemy.direction.y > 0:
-                    enemy.rect.bottom = sprite.rect.top
-                    enemy.direction.y = 0
-                    enemy.jump = True
-                elif player.direction.y < 0:
-                    enemy.rect.top = sprite.rect.bottom
-                    enemy.direction.y = 0
-            #
-            a = pygame.sprite.spritecollide(self.player.sprite, self.enemy_sprites, True)
-            print(a)
-            # hit = pygame.sprite.spritecollide(self.enemy, self.player, True)  #
-            # print(hit)
+        # for sprite in self.tiles.sprites():  # Enemy
+        #     if sprite.rect.colliderect(enemy.rect):
+        #         if enemy.direction.y > 0:
+        #             enemy.rect.bottom = sprite.rect.top
+        #             enemy.direction.y = 0
+        #             enemy.jump = True
+        #         elif player.direction.y < 0:
+        #             enemy.rect.top = sprite.rect.bottom
+        #             enemy.direction.y = 0
+
+        #     if enemy.rect.colliderect(player):
+        #         enemy.yeet()
 
     def run(self):  # Where all the drawing comes together
         # Level tiles
@@ -115,8 +106,8 @@ class Level:  # Creates the level using settings.py
         self.player.update()
         self.player.draw(self.displaySurface)
         # Enemy
-        self.enemy.draw(self.displaySurface)
-        self.enemy.update()
+        # self.enemy.update()
+        # self.enemy.draw(self.displaySurface)
         # Collisions
         self.collisionX()
         self.collisionY()

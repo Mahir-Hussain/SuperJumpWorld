@@ -3,7 +3,7 @@ import os
 import pygame
 
 
-class soundService:
+class soundService:  # Plays sounds.
     @staticmethod
     def get_jump():
         jump = pygame.mixer.Sound(os.path.join("sound", "jump.mp3"))

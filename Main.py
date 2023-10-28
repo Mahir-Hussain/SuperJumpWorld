@@ -112,7 +112,7 @@ class SuperJumpWorld:  # Main class
             self.screen.blit(background, background.get_rect())
             # level drawing
             self.level.run()  # Runs the level.run() command found in level/levels.py
-        else:
+        elif settings.death == True:
             self.onDeath()
         pygame.display.update()
 
