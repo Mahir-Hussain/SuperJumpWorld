@@ -1,5 +1,8 @@
+from random import randint
+
 import pygame
 
+import level.settings as settings
 from services.visualisation_service import visualizationService
 
 
@@ -7,36 +10,54 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         # Image
-        self.image = visualizationService.get_enemy()
+        self.enemy = randint(1, 3)
+        self.image = self.randomEnemy()
         self.rect = self.image.get_rect(topleft=pos)
         # Player movement
+        self.movement = "right"
         self.direction = pygame.math.Vector2(0, 0)
         self.jump = True
         self.jumpCount = 0
         self.jumpMax = 25
         # Velocities
-        self.velocity = 7
+        self.velocity = 5
         self.gravityVel = 4
 
+    def randomEnemy(self):
+        return visualizationService.get_enemy(img=self.enemy, orientation="right")
+
+    def orientation(self, orientation):
+        """
+        This function change the enemy
+        image when they move left/right
+        """
+        self.image = visualizationService.get_enemy(self.enemy, orientation)
+
     def enemyMovement(self):
-        keyPressed = pygame.key.get_pressed()
-        self.movement = False
-
-        if keyPressed[pygame.K_l]:  # and self.rect.x - self.velocity > 0:
-            self.movement = True
-            self.direction.x = -1
-            self.left = True
-        elif keyPressed[pygame.K_k]:
-            self.movement = True
+        """
+        Change the enemy movement
+        based on a variable changed
+        during a block collision
+        """
+        if self.movement == "right":
             self.direction.x = 1
-            self.left = False
-        else:
-            self.direction.x = 0
+            self.orientation("right")
+        elif self.movement == "left":
+            self.direction.x = -1
+            self.orientation("left")
 
-        if keyPressed[pygame.K_UP] and self.jump and self.rect.y - self.jumpMax > 0:  #
-            self.jumpMechanic()
+    def handlemovement(self):
+        if self.movement == "right":
+            self.movement = "left"
+        elif self.movement == "left":
+            self.movement = "right"
 
-    def jumpMechanic(self):  # Enemy jumping
+    def jumpMechanic(self):
+        """
+        Allows the enemy to jump.
+        This functionality is not added
+        at the minute
+        """
         self.jumpCount = self.jumpMax
         if self.jump:
             self.direction.y -= self.jumpCount
@@ -51,5 +72,10 @@ class Enemy(pygame.sprite.Sprite):
     def yeet(self):
         self.rect.y = 1000
 
-    def update(self):
+    def update(self, xShift):
+        """
+        Handles how the enemy moves in regard to left
+        and right and how the level moves
+        """
+        self.rect.x += xShift
         self.enemyMovement()

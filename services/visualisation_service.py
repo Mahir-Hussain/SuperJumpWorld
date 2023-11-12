@@ -3,7 +3,11 @@ import os
 import pygame
 
 
-class visualizationService:  # Loads images to other files. Can be used to get_rect as well
+class visualizationService:
+    """
+    Loads images to other files. Can be used to get_rect as well
+    """
+
     @staticmethod
     def get_icon():
         return pygame.image.load(os.path.join("images", "icon.png")).convert()
@@ -24,6 +28,22 @@ class visualizationService:  # Loads images to other files. Can be used to get_r
             return lemon
         elif orientation == "left":
             return pygame.transform.flip(lemon, True, False)
+
+    @staticmethod
+    def get_enemy(img, orientation="right"):
+        enemyTypes = {
+            1: pygame.image.load(os.path.join("images\characters", "enemy-gun.png")),
+            2: pygame.image.load(os.path.join("images\characters", "enemy-sword.png")),
+            3: pygame.image.load(os.path.join("images\characters", "enemy-big.png")),
+        }
+        # Get the correct image and make the enemy larger
+        enemy = enemyTypes[img]
+        enemy = pygame.transform.scale(enemy, (60, 50))
+        # Return correct direction
+        if orientation == "left":
+            return enemy
+        elif orientation == "right":
+            return pygame.transform.flip(enemy, True, False)
 
     @staticmethod
     def get_mbox():
@@ -85,12 +105,6 @@ class visualizationService:  # Loads images to other files. Can be used to get_r
             return background
         elif needs == "sky":
             return sky
-
-    @staticmethod
-    def get_enemy():
-        enemy = pygame.image.load(os.path.join("images\characters", "enemy-sword.png"))
-        enemy = pygame.transform.scale(enemy, (60, 50))
-        return enemy
 
     @staticmethod
     def get_gameOver():

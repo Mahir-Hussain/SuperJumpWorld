@@ -83,8 +83,6 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         """
-        self.direction represents 1s and 0s.
-        When it is 1, the player moves at the given velocity value
         The player moving on the screen is handled in the
         level/levels.py collisionX/Y function
         """

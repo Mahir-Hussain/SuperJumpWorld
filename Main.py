@@ -1,4 +1,4 @@
-import random
+from random import randint
 from sys import exit
 
 import pygame
@@ -10,15 +10,25 @@ from services.sound_service import soundService
 from services.visualisation_service import visualizationService
 
 ## TODO
-## Add enemy sprites + logic
-## Add an actual level
-## Death screen - go back to the level
-## Enemies
-## Time
-## Sound
-## Add the sky moving - possible function
-## Reflect changes in documentation
-##
+# Add enemy sprites + logic
+# Add an actual level
+###################
+# ADD TO BELOW MODULES IN DOCS
+# -	Add test tables
+# -	Finish documentation
+# -	Make sure it seems chronologically sound
+# Enemies
+# Death screen
+# Actual level
+# Adding tiles
+# validation testing
+# new screenshots
+###################
+# Enemies
+# Time
+# Sound
+# Add the sky moving - possible function
+# Reflect changes in documentation
 
 
 class SuperJumpWorld:  # Main class
@@ -29,10 +39,15 @@ class SuperJumpWorld:  # Main class
         # Initialize
         self.game = False
         self.start = False
-        self.worldChoice = random.randint(1, 3)
+        # Level
+        self.worldChoice = randint(1, 3)
         self.level = Level(self.screen)
+        self.deathTime = 0
 
     def worldChooser(self):
+        """
+        Runs a different background image each time the game is run
+        """
         if self.worldChoice == 1:
             skyImg = visualizationService.get_world1("sky")
             pyramids = visualizationService.get_world1("pyramids")
@@ -49,7 +64,7 @@ class SuperJumpWorld:  # Main class
     def initialize(self):
         """
         Opens the pygame window.
-        Runs throughout the duration of the game being
+        Runs throughout thez duration of the game being
         opened.
         Runs different functions depending on variable boolean states
         """
@@ -57,7 +72,6 @@ class SuperJumpWorld:  # Main class
         clock = pygame.time.Clock()
         # World images
         skyImg, background = self.worldChooser()
-        # skyRect = visualizationService.get_world1("sky").get_rect()
         while True:
             # Setting the pygame window up
             pygame.display.set_caption("Super Jump World")
@@ -74,7 +88,7 @@ class SuperJumpWorld:  # Main class
             if self.game == True:
                 self.screenUpdater(skyImg, background)
 
-            clock.tick(30)  # FPS at 30
+            clock.tick(30)  # FPS locked at 30
 
     def startup(self, keyPressed):
         """
@@ -118,21 +132,31 @@ class SuperJumpWorld:  # Main class
 
     def screenUpdater(self, skyImg, background):
         """
-        When the game is lauchned, this function is launched.
+        When the game is launched, this function is launched.
         If player is not dead, run the game
         If dead, show death screen
         Game can be restarted if dead
         """
         self.screen.fill((0, 0, 0))  # Creates a blank window to be drawn on
-        if settings.death == False:
+        # Time variable
+        self.time = pygame.time.get_ticks()
+        time = round(self.time / 1000)
+
+        if settings.death:  # If the player is dead
+            self.onDeath()
+        else:  # If not dead, run the level
             # World drawing
-            # self.screen.blit(skyImg, (skyRect.x, skyRect.y))
             self.screen.blit(skyImg, skyImg.get_rect())
             self.screen.blit(background, background.get_rect())
+
+            # Text drawing
+            font = pygame.font.Font("freesansbold.ttf", 20)
+            time = font.render(f"Time: {time - self.deathTime}", True, (255, 140, 0))
+
             # level drawing
             self.level.run()  # Runs the level.run() command found in level/levels.py
-        elif settings.death == True:
-            self.onDeath()
+            self.screen.blit(time, (700, 25))
+
         pygame.display.update()
 
     def onDeath(self):
@@ -146,6 +170,7 @@ class SuperJumpWorld:  # Main class
         self.screen.blit(gameOver, gameOver.get_rect())
         # Restart game
         if self.keys[pygame.K_c]:
+            self.deathTime = round(self.time / 1000)
             settings.death = False
             self.game = False
             self.level = Level(self.screen)
