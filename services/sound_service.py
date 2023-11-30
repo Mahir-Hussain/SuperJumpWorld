@@ -19,3 +19,8 @@ class soundService:  # Plays sounds.
         pygame.mixer.music.load(os.path.join("sound", "background.mp3"))
         pygame.mixer.music.play(-1)
         pygame.mixer.music.set_volume(0.1)
+
+    @staticmethod
+    def get_enemyDeath():
+        death = pygame.mixer.Sound(os.path.join("sound", "enemyDeath.mp3"))
+        pygame.mixer.Sound.play(death)

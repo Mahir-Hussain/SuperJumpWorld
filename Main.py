@@ -11,21 +11,17 @@ from services.visualisation_service import visualizationService
 
 ## TODO
 # Add enemy sprites + logic
-# Add an actual level
 ###################
 # ADD TO BELOW MODULES IN DOCS
 # -	Add test tables
 # -	Finish documentation
 # -	Make sure it seems chronologically sound
-# Enemies
-# Death screen
 # Actual level
 # Adding tiles
 # validation testing
 # new screenshots
 ###################
 # Enemies
-# Time
 # Sound
 # Add the sky moving - possible function
 # Reflect changes in documentation
@@ -73,6 +69,7 @@ class SuperJumpWorld:  # Main class
         # World images
         skyImg, background = self.worldChooser()
         while True:
+            soundService.get_background()
             # Setting the pygame window up
             pygame.display.set_caption("Super Jump World")
             pygame.display.set_icon(visualizationService.get_icon())
@@ -143,6 +140,7 @@ class SuperJumpWorld:  # Main class
         time = round(self.time / 1000)
 
         if settings.death:  # If the player is dead
+            soundService.get_death()
             self.onDeath()
         else:  # If not dead, run the level
             # World drawing

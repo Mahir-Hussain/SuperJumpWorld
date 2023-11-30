@@ -1,8 +1,7 @@
-from random import randint
+from random import choice, randint
 
 import pygame
 
-import level.settings as settings
 from services.visualisation_service import visualizationService
 
 
@@ -13,8 +12,9 @@ class Enemy(pygame.sprite.Sprite):
         self.enemy = randint(1, 3)
         self.image = self.randomEnemy()
         self.rect = self.image.get_rect(topleft=pos)
+        # self.rect = pygame.rect.Rect(pos, (100, 32))
         # Player movement
-        self.movement = "right"
+        self.movement = choice(["right", "left"])
         self.direction = pygame.math.Vector2(0, 0)
         self.jump = True
         self.jumpCount = 0
@@ -22,6 +22,7 @@ class Enemy(pygame.sprite.Sprite):
         # Velocities
         self.velocity = 5
         self.gravityVel = 4
+        print(self.rect)
 
     def randomEnemy(self):
         return visualizationService.get_enemy(img=self.enemy, orientation="right")
@@ -69,7 +70,7 @@ class Enemy(pygame.sprite.Sprite):
         self.direction.y -= -self.gravityVel
         self.rect.y += self.direction.y
 
-    def yeet(self):
+    def kill(self):
         self.rect.y = 1000
 
     def update(self, xShift):

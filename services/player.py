@@ -50,9 +50,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if keyPressed[
-            pygame.K_SPACE
-        ]:  # and self.jump and self.rect.y - self.jumpMax > 0:
+        if keyPressed[pygame.K_SPACE]:
             self.jumpMechanic()
 
     def jumpMechanic(self):
@@ -62,6 +60,7 @@ class Player(pygame.sprite.Sprite):
         """
         self.jumpCount = self.jumpMax
         if self.jump:
+            soundService.get_jump()
             self.direction.y -= self.jumpCount
             if self.jumpCount > -self.jumpMax:
                 self.jumpCount -= 1

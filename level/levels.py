@@ -1,12 +1,12 @@
 import pygame
 from pytmx.util_pygame import load_pygame
 
-import level.settings as settings
 from level.settings import tileSize
 from level.tile_maker import Tile
 from services.collider import colliderTile
 from services.enemy import Enemy
 from services.player import Player
+from services.sound_service import soundService
 
 
 class Level:  # Creates the level using settings.py
@@ -25,9 +25,10 @@ class Level:  # Creates the level using settings.py
         # Tile groups
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
-        self.enemy = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
         self.collision = pygame.sprite.Group()
-        self.deathtiles = pygame.sprite.Group()
+        self.hitbox = pygame.sprite.Group()
+        self.end = pygame.sprite.Group()
         # TMX info
         self.tmx_data = load_pygame("level\levelMap\level1.tmx")
         # Adding tiles to screen
@@ -42,12 +43,17 @@ class Level:  # Creates the level using settings.py
                     self.player.add(playerSprite)
             if layer.name == "enemies":
                 for x, y, surf in layer.tiles():
+                    # Enemy
                     enemy = Enemy((x * tileSize, y * tileSize))
-                    self.enemy.add(enemy)
+                    self.enemies.add(enemy)
             if layer.name == "blockers":
                 for x, y, surf in layer.tiles():
                     colliders = colliderTile((x * tileSize, y * tileSize))
                     self.collision.add(colliders)
+            if layer.name == "END":
+                for x, y, surf in layer.tiles():
+                    end = colliderTile((x * tileSize, y * tileSize))
+                    self.end.add(end)
 
     def levelMovement(self):
         """
@@ -80,7 +86,7 @@ class Level:  # Creates the level using settings.py
         player = self.player.sprite
         player.rect.x += player.direction.x * player.velocity
         # Enemy X movement
-        for enemy in self.enemy.sprites():
+        for enemy in self.enemies.sprites():
             enemy.rect.x += enemy.direction.x * enemy.velocity
 
         # Player collision
@@ -93,9 +99,13 @@ class Level:  # Creates the level using settings.py
 
         # Enemy collision (used to change direction)
         for blockers in self.collision.sprites():
-            for enemy in self.enemy.sprites():
+            for enemy in self.enemies.sprites():
                 if enemy.rect.colliderect(blockers.rect):
                     enemy.handlemovement()
+
+        for sprite in self.end.sprites():
+            if sprite.rect.colliderect(player.rect):
+                print("You have won!")
 
     def collisionY(self):
         """
@@ -106,10 +116,9 @@ class Level:  # Creates the level using settings.py
         player.rect.y += player.direction.y
         player.gravity()
         # Enemy Y
-        for x in self.enemy.sprites():
-            # enemy = self.enemy.sprites
-            x.rect.y += x.direction.y
-            x.gravity()
+        for enemy in self.enemies.sprites():
+            enemy.rect.y += enemy.direction.y
+            enemy.gravity()
 
         for sprite in self.tiles.sprites():  # Player
             if sprite.rect.colliderect(player.rect):
@@ -121,7 +130,7 @@ class Level:  # Creates the level using settings.py
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
 
-        for enemy in self.enemy.sprites():
+        for enemy in self.enemies.sprites():
             for sprite in self.tiles.sprites():  # Enemy
                 if sprite.rect.colliderect(enemy.rect):
                     if enemy.direction.y > 0:
@@ -132,8 +141,35 @@ class Level:  # Creates the level using settings.py
                         enemy.rect.top = sprite.rect.bottom
                         enemy.direction.y = 0
 
-                if enemy.rect.colliderect(player):
-                    enemy.yeet()
+    def checkEnemyCollision(self):
+        """
+        Checks how the player hits the enemy
+        If it is from above, kill the enemy
+        if from any other direction, kill player.
+        """
+        enemyCollision = pygame.sprite.spritecollide(
+            self.player.sprite, self.enemies.sprites(), False
+        )  # Returns a list of when the enemy and the player collide
+
+        if enemyCollision:
+            for enemy in enemyCollision:
+                enemyCenter = enemy.rect.centery
+                enemyTop = enemy.rect.top
+                playerBottom = self.player.sprite.rect.bottom
+                if (
+                    enemyTop < playerBottom < enemyCenter
+                    and self.player.sprite.direction.y >= 0
+                ):
+                    print("ENEMY")
+                    enemy.rect.x += 10000
+                    soundService.get_enemyDeath()
+
+                else:
+                    self.player.sprite.rect.y = 1000
+                    print(
+                        f"enemyCenter: {enemyCenter}, ETop: {enemyTop}, pBot: {playerBottom}"
+                    )
+                    print("death")
 
     def run(self):
         """
@@ -149,8 +185,10 @@ class Level:  # Creates the level using settings.py
         self.player.update()
         self.player.draw(self.displaySurface)
         # Enemy
-        self.enemy.update(self.worldShift)
-        self.enemy.draw(self.displaySurface)
+        self.enemies.update(self.worldShift)
+        self.enemies.draw(self.displaySurface)
+        # Hitbox
+        self.checkEnemyCollision()
         # Collisions
         self.collisionX()
         self.collisionY()
