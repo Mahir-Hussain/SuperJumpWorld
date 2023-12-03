@@ -4,6 +4,8 @@ screenWidth = 800
 screenHeight = 15 * tileSize  # around 555
 # Variables changed during runtime
 death = False
+score = 0
+finish = False
 # Settings the user can change
 # sound = True/False
 #

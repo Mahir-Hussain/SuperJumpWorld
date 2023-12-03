@@ -22,7 +22,6 @@ class Enemy(pygame.sprite.Sprite):
         # Velocities
         self.velocity = 5
         self.gravityVel = 4
-        print(self.rect)
 
     def randomEnemy(self):
         return visualizationService.get_enemy(img=self.enemy, orientation="right")

@@ -1,6 +1,7 @@
 import pygame
 from pytmx.util_pygame import load_pygame
 
+import level.settings as settings
 from level.settings import tileSize
 from level.tile_maker import Tile
 from services.collider import colliderTile
@@ -24,10 +25,12 @@ class Level:  # Creates the level using settings.py
         """
         # Tile groups
         self.tiles = pygame.sprite.Group()
+        # Characters
         self.player = pygame.sprite.GroupSingle()
         self.enemies = pygame.sprite.Group()
+        # Level
         self.collision = pygame.sprite.Group()
-        self.hitbox = pygame.sprite.Group()
+        self.collectables = pygame.sprite.Group()
         self.end = pygame.sprite.Group()
         # TMX info
         self.tmx_data = load_pygame("level\levelMap\level1.tmx")
@@ -43,17 +46,20 @@ class Level:  # Creates the level using settings.py
                     self.player.add(playerSprite)
             if layer.name == "enemies":
                 for x, y, surf in layer.tiles():
-                    # Enemy
                     enemy = Enemy((x * tileSize, y * tileSize))
                     self.enemies.add(enemy)
             if layer.name == "blockers":
                 for x, y, surf in layer.tiles():
                     colliders = colliderTile((x * tileSize, y * tileSize))
                     self.collision.add(colliders)
-            if layer.name == "END":
+            if layer.name == "end-detection":
                 for x, y, surf in layer.tiles():
                     end = colliderTile((x * tileSize, y * tileSize))
                     self.end.add(end)
+            if layer.name == "collectables":
+                for x, y, surf in layer.tiles():
+                    collectables = colliderTile((x * tileSize, y * tileSize))
+                    self.collectables.add(collectables)
 
     def levelMovement(self):
         """
@@ -103,9 +109,10 @@ class Level:  # Creates the level using settings.py
                 if enemy.rect.colliderect(blockers.rect):
                     enemy.handlemovement()
 
+        # To check if the player has reached the end of the level
         for sprite in self.end.sprites():
             if sprite.rect.colliderect(player.rect):
-                print("You have won!")
+                settings.finish = True
 
     def collisionY(self):
         """
@@ -120,7 +127,7 @@ class Level:  # Creates the level using settings.py
             enemy.rect.y += enemy.direction.y
             enemy.gravity()
 
-        for sprite in self.tiles.sprites():  # Player
+        for sprite in self.tiles.sprites():  # Player tile detecion
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
@@ -130,8 +137,8 @@ class Level:  # Creates the level using settings.py
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
 
-        for enemy in self.enemies.sprites():
-            for sprite in self.tiles.sprites():  # Enemy
+        for enemy in self.enemies.sprites():  # Enemy tile detection
+            for sprite in self.tiles.sprites():
                 if sprite.rect.colliderect(enemy.rect):
                     if enemy.direction.y > 0:
                         enemy.rect.bottom = sprite.rect.top
@@ -160,16 +167,22 @@ class Level:  # Creates the level using settings.py
                     enemyTop < playerBottom < enemyCenter
                     and self.player.sprite.direction.y >= 0
                 ):
-                    print("ENEMY")
                     enemy.rect.x += 10000
                     soundService.get_enemyDeath()
+                    settings.score += 1
 
                 else:
                     self.player.sprite.rect.y = 1000
-                    print(
-                        f"enemyCenter: {enemyCenter}, ETop: {enemyTop}, pBot: {playerBottom}"
-                    )
-                    print("death")
+
+    def checkCollectablecollision(self):
+        """
+        Checks if the player hits a collectable tile
+        """
+        player = self.player.sprite
+        for sprite in self.collectables.sprites():
+            if sprite.rect.colliderect(player.rect):
+                settings.score += 1
+                sprite.rect.x += 100000
 
     def run(self):
         """
@@ -184,6 +197,7 @@ class Level:  # Creates the level using settings.py
         # Player
         self.player.update()
         self.player.draw(self.displaySurface)
+        self.checkCollectablecollision()
         # Enemy
         self.enemies.update(self.worldShift)
         self.enemies.draw(self.displaySurface)
@@ -193,3 +207,5 @@ class Level:  # Creates the level using settings.py
         self.collisionX()
         self.collisionY()
         self.collision.update(self.worldShift)
+        self.collectables.update(self.worldShift)
+        self.end.update(self.worldShift)

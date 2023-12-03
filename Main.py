@@ -9,23 +9,6 @@ from level.levels import Level
 from services.sound_service import soundService
 from services.visualisation_service import visualizationService
 
-## TODO
-# Add enemy sprites + logic
-###################
-# ADD TO BELOW MODULES IN DOCS
-# -	Add test tables
-# -	Finish documentation
-# -	Make sure it seems chronologically sound
-# Actual level
-# Adding tiles
-# validation testing
-# new screenshots
-###################
-# Enemies
-# Sound
-# Add the sky moving - possible function
-# Reflect changes in documentation
-
 
 class SuperJumpWorld:  # Main class
     def __init__(self):
@@ -139,10 +122,14 @@ class SuperJumpWorld:  # Main class
         self.time = pygame.time.get_ticks()
         time = round(self.time / 1000)
 
-        if settings.death:  # If the player is dead
+        if settings.finish:  # If player has finished the level
+            self.onFinish()
+
+        elif settings.death:  # If the player is dead
             soundService.get_death()
             self.onDeath()
-        else:  # If not dead, run the level
+
+        else:  # If not dead or finished, run the level
             # World drawing
             self.screen.blit(skyImg, skyImg.get_rect())
             self.screen.blit(background, background.get_rect())
@@ -150,10 +137,12 @@ class SuperJumpWorld:  # Main class
             # Text drawing
             font = pygame.font.Font("freesansbold.ttf", 20)
             time = font.render(f"Time: {time - self.deathTime}", True, (255, 140, 0))
+            score = font.render(f"Score: {settings.score}", True, (255, 140, 0))
 
             # level drawing
             self.level.run()  # Runs the level.run() command found in level/levels.py
             self.screen.blit(time, (700, 25))
+            self.screen.blit(score, (700, 50))
 
         pygame.display.update()
 
@@ -167,10 +156,34 @@ class SuperJumpWorld:  # Main class
         # Drawing
         self.screen.blit(gameOver, gameOver.get_rect())
         # Restart game
-        if self.keys[pygame.K_c]:
+        if self.keys[pygame.K_c] and settings.death:
+            # Reset variables
+            settings.score = 0
             self.deathTime = round(self.time / 1000)
             settings.death = False
             self.game = False
+            # Run game
+            self.level = Level(self.screen)
+            SuperJumpWorld().startup(self.keys)
+
+    def onFinish(self):
+        """
+        When the player has reached the end of the level
+        This function handles what happens after
+        """
+        soundService.get_applause()
+        # Images
+        endScreen = visualizationService.get_endScreen()
+        # Drawing
+        self.screen.blit(endScreen, endScreen.get_rect())
+        # Restart game
+        if self.keys[pygame.K_c] and settings.finish:
+            # Reset variables
+            settings.score = 0
+            settings.finish = False
+            self.deathTime = round(self.time / 1000)
+            self.game = False
+            # Run game
             self.level = Level(self.screen)
             SuperJumpWorld().startup(self.keys)
 

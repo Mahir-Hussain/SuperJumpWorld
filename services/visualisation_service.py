@@ -39,10 +39,6 @@ class visualizationService:
         # Get the correct image and make the enemy larger
         enemy = enemyTypes[img]
         enemy = pygame.transform.scale(enemy, (60, 50))
-        # if img in (1, 2):
-        #    enemy = pygame.transform.scale(enemy, (30, 35))
-        # else:
-        #    enemy = pygame.transform.scale(enemy, (20, 38))
         # Return correct direction
         if orientation == "left":
             return enemy
@@ -116,4 +112,4 @@ class visualizationService:
 
     @staticmethod
     def get_endScreen():
-        return pygame.image.load(os.path.join("images", "end-screen"))
+        return pygame.image.load(os.path.join("images", "end-screen.png"))
