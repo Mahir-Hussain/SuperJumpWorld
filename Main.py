@@ -171,13 +171,14 @@ class SuperJumpWorld:  # Main class
         When the player has reached the end of the level
         This function handles what happens after
         """
-        soundService.get_applause()
         # Images
         endScreen = visualizationService.get_endScreen()
         # Drawing
         self.screen.blit(endScreen, endScreen.get_rect())
         # Restart game
+        print(f"Score: {settings.score}\nTime: {self.time / 1000 - self.deathTime}")
         if self.keys[pygame.K_c] and settings.finish:
+            soundService.get_applause()
             # Reset variables
             settings.score = 0
             settings.finish = False

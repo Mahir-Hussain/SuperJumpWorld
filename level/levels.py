@@ -73,7 +73,7 @@ class Level:  # Creates the level using settings.py
             self.worldShift = 7
             player.velocity = 0
         elif (
-            playerX > 350
+            playerX > 380
             and direction > 0
             and player.movement == True
             and player.left == False
