@@ -5,8 +5,8 @@ This project is made for the Computer Science A-level project component.
 ## Project Description
 
 This project takes inspiration Super Mario Bros game.
-![image](https://github.com/user-attachments/assets/982a5e02-03ff-415c-8c40-620a5271c24f)
 
+![image](https://github.com/user-attachments/assets/982a5e02-03ff-415c-8c40-620a5271c24f)
 
 ## Key Features
 
