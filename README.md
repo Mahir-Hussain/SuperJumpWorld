@@ -16,7 +16,7 @@ This project takes inspiration Super Mario Bros game.
 - **Enemies:** Enemies which move towards the player.
 - **Level:** Using a tmx file, the level can be easily changed by using a level editor (Tiled)
 
-## Libraies Used
+## Libraries Used
 
 - Pygame
 - pytmx
