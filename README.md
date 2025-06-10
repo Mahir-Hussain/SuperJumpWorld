@@ -1,8 +1,6 @@
 # Super Jump World
 
-This project is made for the Computer Science A-level project component.
-
-## Project Description
+### Project Description
 
 This project takes inspiration Super Mario Bros game.
 
